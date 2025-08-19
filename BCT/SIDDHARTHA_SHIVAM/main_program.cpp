@@ -85,6 +85,22 @@ int main()
             word.clear();
             needRefresh = true;
         }
+        // If Enter is pressed, write the suggestion
+        else if (ch == 13)
+        {
+            std::string suggestion = dict.get_closest_word(word);
+            if (!suggestion.empty())
+            {
+                // remove the current partial word from the end of line
+                for (size_t i = 0; i < word.size() && !line.empty(); ++i)
+                    line.pop_back();
+
+                // append the full suggestion (no duplicate of the partial)
+                line += suggestion;
+                // word.clear();
+                needRefresh = true;
+            }
+        }
         else if (ch != ' ' && ch != 8)
         {
             word.push_back(ch);
@@ -108,7 +124,7 @@ int main()
 
             std::cout << BLUE << "Typed: " << RESET << BOLD << word << RESET;
             std::cout << MAGENTA << "\nSuggestion: " << RESET << GREEN << BOLD << suggestion << RESET;
-            std::cout << RED << "\n\nFull text: " << RESET << BOLD << line << RESET << "\n";
+            std::cout << RED << "\n Your Text Here: " << RESET << BOLD << line << RESET << "\n";
 
             needRefresh = false;
         }
